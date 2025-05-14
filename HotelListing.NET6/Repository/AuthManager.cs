@@ -18,11 +18,36 @@ namespace HotelListing.NET6.Repository
             _userManager = userManager;
         }
 
-   
+        public async Task<bool> Login(LoginDto loginDto)
+        {
+            bool isValidUser = false;
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(loginDto.Email);
+                if (user == null)
+                    isValidUser = false;
+                var validPassword = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+                isValidUser = validPassword;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return isValidUser;
+        }
 
         public async Task<IEnumerable<IdentityError>> UserRegister(ApiUserDto userDto)
         {
-            throw new NotImplementedException();
+            var user = _mapper.Map<ApiUser>(userDto);
+            user.UserName = userDto.Email;
+
+            var result = await _userManager.CreateAsync(user, userDto.Password);
+            if(result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "User");
+            }
+            return result.Errors;
         }
     }
 }
