@@ -30,8 +30,8 @@ namespace HotelListing.NET6.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> UserRegister([FromBody] ApiUserDto userDto)
         {
-            var errors = await _manager.UserRegister(userDto);
-            if(errors.Any())
+            var errors = await _manager.Register(userDto);
+            if (errors.Any())
             {
                 foreach (var error in errors)
                 {
@@ -51,13 +51,13 @@ namespace HotelListing.NET6.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> UserLogin([FromBody] LoginDto loginDto)
         {
-            var isValiduser = await _manager.Login(loginDto);
-            if (!isValiduser)
+            var authResponse = await _manager.Login(loginDto);
+            if (authResponse == null)
             {
                 return Unauthorized();
             }
 
-            return Ok();
+            return Ok(authResponse);
         }
     }
 }
