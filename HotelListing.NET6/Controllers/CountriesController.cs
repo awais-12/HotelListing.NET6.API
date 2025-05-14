@@ -2,6 +2,7 @@ using AutoMapper;
 using HotelListing.NET6.Contracts;
 using HotelListing.NET6.Data;
 using HotelListing.NET6.Models.Country;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,6 +39,7 @@ namespace HotelListing.NET6.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Country>> PostCountry(CreateCountryDto createCountryDto)
         {
 
@@ -80,6 +82,7 @@ namespace HotelListing.NET6.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
             if (id <= 0)
