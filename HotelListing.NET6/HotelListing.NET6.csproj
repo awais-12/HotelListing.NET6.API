@@ -34,6 +34,8 @@
     <None Remove="Models\Country\" />
     <None Remove="Configurations\" />
     <None Remove="Models\Hotel\" />
+    <None Remove="Contracts\" />
+    <None Remove="Repository\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -41,5 +43,7 @@
     <Folder Include="Models\Country\" />
     <Folder Include="Configurations\" />
     <Folder Include="Models\Hotel\" />
+    <Folder Include="Contracts\" />
+    <Folder Include="Repository\" />
   </ItemGroup>
 </Project>
