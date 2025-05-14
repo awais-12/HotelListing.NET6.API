@@ -26,6 +26,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.35" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.35" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +37,8 @@
     <None Remove="Models\Hotel\" />
     <None Remove="Contracts\" />
     <None Remove="Repository\" />
+    <None Remove="Data\Configurations\" />
+    <None Remove="Models\User\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -45,5 +48,7 @@
     <Folder Include="Models\Hotel\" />
     <Folder Include="Contracts\" />
     <Folder Include="Repository\" />
+    <Folder Include="Data\Configurations\" />
+    <Folder Include="Models\User\" />
   </ItemGroup>
 </Project>
