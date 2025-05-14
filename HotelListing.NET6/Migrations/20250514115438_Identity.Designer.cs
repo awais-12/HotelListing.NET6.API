@@ -3,6 +3,7 @@ using System;
 using HotelListing.NET6.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HotelListing.NET6.Migrations
 {
     [DbContext(typeof(HotelListingDbContext))]
-    partial class HotelListingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250514115438_Identity")]
+    partial class Identity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,26 +115,6 @@ namespace HotelListing.NET6.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Pakistan",
-                            ShortName = "PK"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Sudia",
-                            ShortName = "SD"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "India",
-                            ShortName = "IND"
-                        });
                 });
 
             modelBuilder.Entity("HotelListing.NET6.Data.Hotel", b =>
@@ -162,32 +144,6 @@ namespace HotelListing.NET6.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Hotels");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "Lahore",
-                            CountryId = 2,
-                            Name = "Stalive",
-                            Rating = 4.5
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "New York",
-                            CountryId = 1,
-                            Name = "Shangai",
-                            Rating = 4.5
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "Iceland",
-                            CountryId = 3,
-                            Name = "Polo",
-                            Rating = 4.5
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -214,22 +170,6 @@ namespace HotelListing.NET6.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "377b04f4-20fc-462f-a399-c7fcb693b789",
-                            ConcurrencyStamp = "18e17bff-6258-41be-9afa-50d7bcdb3e29",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "0a403737-064e-461a-bbfa-ef97d4c6b9ac",
-                            ConcurrencyStamp = "a005f181-865f-4bf7-8986-425072269b38",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
