@@ -11,14 +11,14 @@ namespace HotelListing.NET6.Controllers
 {
     [Route("api/v{version:apiVersion}/countries")]
     [ApiController]
-    [ApiVersion("1", Deprecated = true)]
-    public class CountriesController : ControllerBase
+    [ApiVersion("2.0")]
+    public class CountriesV2Controller : ControllerBase
     {
         private readonly ICountryRepository _countrtyRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<CountriesController> _logger;
 
-        public CountriesController(ICountryRepository countrtyRepository, IMapper mapper, ILogger<CountriesController> logger)
+        public CountriesV2Controller(ICountryRepository countrtyRepository, IMapper mapper, ILogger<CountriesController> logger)
         {
             _countrtyRepository = countrtyRepository;
             _mapper = mapper;
@@ -65,7 +65,7 @@ namespace HotelListing.NET6.Controllers
             //_context.Entry(country).State = EntityState.Modified;
             var country = await _countrtyRepository.GetAsync(id);
             if (country == null)
-                throw new NotFoundException(nameof(PutCountry), id);
+                throw new NotFoundException(nameof(PutCountry) , id);
 
             _mapper.Map(updateCountry, country);
 
@@ -90,7 +90,7 @@ namespace HotelListing.NET6.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
             if (id <= 0)
