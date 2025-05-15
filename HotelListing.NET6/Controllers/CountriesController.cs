@@ -2,6 +2,7 @@ using AutoMapper;
 using HotelListing.NET6.Contracts;
 using HotelListing.NET6.Data;
 using HotelListing.NET6.Exceptions;
+using HotelListing.NET6.Models;
 using HotelListing.NET6.Models.Country;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,11 +26,18 @@ namespace HotelListing.NET6.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<GetCountryDto>>> GetCountries()
         {
             var countries = await _countrtyRepository.GetAllAsync();
             return Ok(_mapper.Map<List<GetCountryDto>>(countries));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<PagedResult<GetCountryDto>>> GetPagedCountries([FromQuery] QueryParameters queryParameters)
+        {
+            var pagedCounteriesResult = await _countrtyRepository.GetAllAsync<GetCountryDto>(queryParameters);
+            return Ok(pagedCounteriesResult);
         }
 
         [HttpGet("{id}")]

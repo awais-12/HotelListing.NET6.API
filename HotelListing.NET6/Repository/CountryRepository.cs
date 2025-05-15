@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using HotelListing.NET6.Contracts;
 using HotelListing.NET6.Data;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ namespace HotelListing.NET6.Repository
     {
         private readonly HotelListingDbContext _context;
 
-        public CountryRepository(HotelListingDbContext context) : base(context)
+        public CountryRepository(HotelListingDbContext context, IMapper mapper) : base(context,mapper)
         {
             _context = context;
         }
