@@ -18,7 +18,7 @@ namespace HotelListing.NET6.Controllers
         private readonly IAuthManager _manager;
         private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IAuthManager manager,ILogger<AccountController> logger)
+        public AccountController(IAuthManager manager, ILogger<AccountController> logger)
         {
             _manager = manager;
             _logger = logger;
@@ -33,28 +33,21 @@ namespace HotelListing.NET6.Controllers
         public async Task<ActionResult> UserRegister([FromBody] ApiUserDto userDto)
         {
             _logger.LogInformation($"Registration Attemp user {userDto.Email}");
-            try
-            {
-                var errors = await _manager.Register(userDto);
-                if (errors.Any())
-                {
-                    foreach (var error in errors)
-                    {
-                        ModelState.AddModelError(error.Code, error.Description);
-                    }
 
-                    return BadRequest(ModelState);
+            var errors = await _manager.Register(userDto);
+            if (errors.Any())
+            {
+                foreach (var error in errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
                 }
 
-                return Ok();
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $" something went wrong {nameof(UserRegister)} -- Registration Attemp user {userDto.Email}");
-                return Problem($" something went wrong {nameof(UserRegister)} -- Registration Attemp user {userDto.Email}",statusCode:500);
 
-            }
-       
+            return Ok();
+
+
         }
 
         [HttpPost]
@@ -65,34 +58,8 @@ namespace HotelListing.NET6.Controllers
         public async Task<ActionResult> UserLogin([FromBody] LoginDto loginDto)
         {
             _logger.LogInformation($"Registration Attemp user {loginDto.Email}");
-            try
-            {
-                var authResponse = await _manager.Login(loginDto);
-                if (authResponse == null)
-                {
-                    return Unauthorized();
-                }
 
-                return Ok(authResponse);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $" something went wrong {nameof(UserLogin)} -- Registration Attemp user {loginDto.Email}");
-                return Problem($" something went wrong {nameof(UserLogin)} -- Registration Attemp user {loginDto.Email}", statusCode: 500);
-
-            }
-
-        }
-
-
-        [HttpPost]
-        [Route("refreshToken")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> RefreshToken([FromBody] AuthResponseDto request)
-        {
-            var authResponse = await _manager.VerifyRefreshToken(request);
+            var authResponse = await _manager.Login(loginDto);
             if (authResponse == null)
             {
                 return Unauthorized();
@@ -100,5 +67,25 @@ namespace HotelListing.NET6.Controllers
 
             return Ok(authResponse);
         }
+
+
+    
+
+
+    [HttpPost]
+    [Route("refreshToken")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult> RefreshToken([FromBody] AuthResponseDto request)
+    {
+        var authResponse = await _manager.VerifyRefreshToken(request);
+        if (authResponse == null)
+        {
+            return Unauthorized();
+        }
+
+        return Ok(authResponse);
     }
+}
 }

@@ -1,6 +1,7 @@
 using AutoMapper;
 using HotelListing.NET6.Contracts;
 using HotelListing.NET6.Data;
+using HotelListing.NET6.Exceptions;
 using HotelListing.NET6.Models.Country;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,8 +37,9 @@ namespace HotelListing.NET6.Controllers
             var country = await _countrtyRepository.GetDetails(id);
             if (country == null)
             {
-                _logger.LogWarning($"No Found Country {nameof(GetCountry)} with id : {id}");
-                return NotFound();
+                throw new NotFoundException(nameof(GetCountry), id); //Global Exception
+                //_logger.LogWarning($"No Found Country {nameof(GetCountry)} with id : {id}");
+                //return NotFound();
             }
 
             return Ok(_mapper.Map<CountryDto>(country));
@@ -62,7 +64,7 @@ namespace HotelListing.NET6.Controllers
             //_context.Entry(country).State = EntityState.Modified;
             var country = await _countrtyRepository.GetAsync(id);
             if (country == null)
-                return NotFound();
+                throw new NotFoundException(nameof(PutCountry) , id);
 
             _mapper.Map(updateCountry, country);
 

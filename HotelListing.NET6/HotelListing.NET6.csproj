@@ -28,6 +28,7 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +41,8 @@
     <None Remove="Repository\" />
     <None Remove="Data\Configurations\" />
     <None Remove="Models\User\" />
+    <None Remove="Exceptions\" />
+    <None Remove="Middleware\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -51,5 +54,7 @@
     <Folder Include="Repository\" />
     <Folder Include="Data\Configurations\" />
     <Folder Include="Models\User\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Middleware\" />
   </ItemGroup>
 </Project>
