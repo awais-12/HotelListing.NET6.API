@@ -16,15 +16,17 @@ namespace HotelListing.NET6.Repository
         private readonly IMapper _mapper;
         private readonly UserManager<ApiUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<AuthManager> _logger;
         private ApiUser _user;
         private const string _loginProvider = "HotelListing";
         private const string _refreshToken = "RefreshToken";
 
-        public AuthManager(IMapper mapper, UserManager<ApiUser> userManager, IConfiguration configuration)
+        public AuthManager(IMapper mapper, UserManager<ApiUser> userManager, IConfiguration configuration,ILogger<AuthManager> logger)
         {
             _mapper = mapper;
             _userManager = userManager;
             _configuration = configuration;
+            _logger = logger;
         }
 
  
@@ -70,13 +72,18 @@ namespace HotelListing.NET6.Repository
 
         public async Task<AuthResponseDto> Login(LoginDto loginDto)
         {
+
             _user = await _userManager.FindByEmailAsync(loginDto.Email);
             var validPassword = await _userManager.CheckPasswordAsync(_user, loginDto.Password);
             if (_user == null || !validPassword)
+            {
+                _logger.LogWarning($"Loging user not found {loginDto.Email} and {nameof(Login)}");
                 return null;
+            }
 
             var token = await GenerateToken();
 
+            _logger.LogInformation($"Login user with email {loginDto.Email} and the token is {token}");
             return new AuthResponseDto
             {
                 UserId = _user.Id,

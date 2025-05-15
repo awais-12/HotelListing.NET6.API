@@ -16,10 +16,12 @@ namespace HotelListing.NET6.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAuthManager _manager;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IAuthManager manager)
+        public AccountController(IAuthManager manager,ILogger<AccountController> logger)
         {
             _manager = manager;
+            _logger = logger;
         }
 
 
@@ -30,18 +32,29 @@ namespace HotelListing.NET6.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> UserRegister([FromBody] ApiUserDto userDto)
         {
-            var errors = await _manager.Register(userDto);
-            if (errors.Any())
+            _logger.LogInformation($"Registration Attemp user {userDto.Email}");
+            try
             {
-                foreach (var error in errors)
+                var errors = await _manager.Register(userDto);
+                if (errors.Any())
                 {
-                    ModelState.AddModelError(error.Code, error.Description);
+                    foreach (var error in errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+
+                    return BadRequest(ModelState);
                 }
 
-                return BadRequest(ModelState);
+                return Ok();
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $" something went wrong {nameof(UserRegister)} -- Registration Attemp user {userDto.Email}");
+                return Problem($" something went wrong {nameof(UserRegister)} -- Registration Attemp user {userDto.Email}",statusCode:500);
 
-            return Ok();
+            }
+       
         }
 
         [HttpPost]
@@ -51,13 +64,24 @@ namespace HotelListing.NET6.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> UserLogin([FromBody] LoginDto loginDto)
         {
-            var authResponse = await _manager.Login(loginDto);
-            if (authResponse == null)
+            _logger.LogInformation($"Registration Attemp user {loginDto.Email}");
+            try
             {
-                return Unauthorized();
+                var authResponse = await _manager.Login(loginDto);
+                if (authResponse == null)
+                {
+                    return Unauthorized();
+                }
+
+                return Ok(authResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $" something went wrong {nameof(UserLogin)} -- Registration Attemp user {loginDto.Email}");
+                return Problem($" something went wrong {nameof(UserLogin)} -- Registration Attemp user {loginDto.Email}", statusCode: 500);
+
             }
 
-            return Ok(authResponse);
         }
 
 
