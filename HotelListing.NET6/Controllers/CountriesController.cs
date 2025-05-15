@@ -30,8 +30,8 @@ namespace HotelListing.NET6.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<GetCountryDto>>> GetCountries()
         {
-            var countries = await _countrtyRepository.GetAllAsync();
-            return Ok(_mapper.Map<List<GetCountryDto>>(countries));
+            var countries = await _countrtyRepository.GetAllAsync<GetCountryDto>();
+            return Ok(countries);
         }
 
         [HttpGet]
@@ -45,24 +45,16 @@ namespace HotelListing.NET6.Controllers
         public async Task<ActionResult<CountryDto>> GetCountry(int id)
         {
             var country = await _countrtyRepository.GetDetails(id);
-            if (country == null)
-            {
-                throw new NotFoundException(nameof(GetCountry), id); //Global Exception
-                //_logger.LogWarning($"No Found Country {nameof(GetCountry)} with id : {id}");
-                //return NotFound();
-            }
-
-            return Ok(_mapper.Map<CountryDto>(country));
+            return Ok(country);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Country>> PostCountry(CreateCountryDto createCountryDto)
+        public async Task<ActionResult<CountryDto>> PostCountry(CreateCountryDto createCountryDto)
         {
 
-            var country = _mapper.Map<Country>(createCountryDto);
-            await _countrtyRepository.AddAsync(country);
-            return CreatedAtAction("GetCountry", new { id = country.Id }, country);
+            var country = await _countrtyRepository.AddAsync<CreateCountryDto, GetCountryDto>(createCountryDto);
+            return CreatedAtAction(nameof(GetCountry), new { id = country.Id }, country);
         }
 
         [HttpPut("{id}")]
@@ -71,16 +63,9 @@ namespace HotelListing.NET6.Controllers
             if (id != updateCountry.Id)
                 return BadRequest();
 
-            //_context.Entry(country).State = EntityState.Modified;
-            var country = await _countrtyRepository.GetAsync(id);
-            if (country == null)
-                throw new NotFoundException(nameof(PutCountry), id);
-
-            _mapper.Map(updateCountry, country);
-
             try
             {
-                await _countrtyRepository.UpdateAsync(country);
+                await _countrtyRepository.UpdateAsync(id, updateCountry);
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -102,9 +87,7 @@ namespace HotelListing.NET6.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
-            if (id <= 0)
-                return BadRequest();
-
+        
             await _countrtyRepository.DeleteAsync(id);
             return NoContent();
         }

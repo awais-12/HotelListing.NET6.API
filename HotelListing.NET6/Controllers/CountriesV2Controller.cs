@@ -55,7 +55,7 @@ namespace HotelListing.NET6.Controllers
 
             var country = _mapper.Map<Country>(createCountryDto);
             await _countrtyRepository.AddAsync(country);
-            return CreatedAtAction("GetCountry", new { id = country.Id }, country);
+            return CreatedAtAction(nameof(GetCountry), new { id = country.Id }, country);
         }
 
         [HttpPut("{id}")]
