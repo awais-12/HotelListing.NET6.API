@@ -16,6 +16,12 @@ namespace HotelListing.API.Core.Contracts
         Task<bool> ExistAsync(int id);
         IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression);
         IQueryable<T> FindByConditionWithTracking(Expression<Func<T, bool>> expression);
+     
+        Task<TResult> GetAsync<TResult>(int? id);
+        Task<List<TResult>> GetAllAsync<TResult>();
+        Task<TResult> AddAsync<TSource, TResult>(TSource source);
+        Task UpdateAsync<TSource>(int id, TSource source);
+       
     }
 }
 
