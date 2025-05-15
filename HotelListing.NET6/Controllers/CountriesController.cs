@@ -14,11 +14,13 @@ namespace HotelListing.NET6.Controllers
     {
         private readonly ICountryRepository _countrtyRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<CountriesController> _logger;
 
-        public CountriesController(ICountryRepository countrtyRepository, IMapper mapper)
+        public CountriesController(ICountryRepository countrtyRepository, IMapper mapper, ILogger<CountriesController> logger)
         {
             _countrtyRepository = countrtyRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -33,7 +35,10 @@ namespace HotelListing.NET6.Controllers
         {
             var country = await _countrtyRepository.GetDetails(id);
             if (country == null)
+            {
+                _logger.LogWarning($"No Found Country {nameof(GetCountry)} with id : {id}");
                 return NotFound();
+            }
 
             return Ok(_mapper.Map<CountryDto>(country));
         }
