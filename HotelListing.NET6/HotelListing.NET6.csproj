@@ -32,31 +32,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.1.0" />
   </ItemGroup>
-
   <ItemGroup>
-    <None Remove="Data\" />
-    <None Remove="Models\" />
-    <None Remove="Models\Country\" />
-    <None Remove="Configurations\" />
-    <None Remove="Models\Hotel\" />
-    <None Remove="Contracts\" />
-    <None Remove="Repository\" />
-    <None Remove="Data\Configurations\" />
-    <None Remove="Models\User\" />
-    <None Remove="Exceptions\" />
-    <None Remove="Middleware\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Models\" />
-    <Folder Include="Models\Country\" />
-    <Folder Include="Configurations\" />
-    <Folder Include="Models\Hotel\" />
-    <Folder Include="Contracts\" />
-    <Folder Include="Repository\" />
-    <Folder Include="Data\Configurations\" />
-    <Folder Include="Models\User\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="Middleware\" />
+    <ProjectReference Include="..\HotelListing.API.Core\HotelListing.API.Core.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

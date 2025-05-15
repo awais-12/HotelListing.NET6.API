@@ -1,9 +1,10 @@
 using AutoMapper;
-using HotelListing.NET6.Contracts;
-using HotelListing.NET6.Data;
-using HotelListing.NET6.Exceptions;
-using HotelListing.NET6.Models;
-using HotelListing.NET6.Models.Country;
+using HHotelListing.API.Core.Models;
+using HotelListing.API.Core.Contracts;
+using HotelListing.API.Core.Exceptions;
+using HotelListing.API.Core.Models;
+using HotelListing.API.Core.Models.Country;
+using HotelListing.API.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
